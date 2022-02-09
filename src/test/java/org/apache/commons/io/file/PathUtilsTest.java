@@ -17,28 +17,21 @@
 
 package org.apache.commons.io.file;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.DirectoryStream;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.nio.file.attribute.DosFileAttributeView;
 import java.nio.file.attribute.PosixFileAttributes;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.NameFileFilter;
 import org.apache.commons.io.test.TestUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -346,6 +339,35 @@ public class PathUtilsTest extends AbstractTempDirTest {
             os.write(BYTE_ARRAY_FIXTURE);
         }
         return file;
+    }
+
+    @Test
+    public void testIsEmptyDirectoryStateTrue() throws IOException {
+        final Path tempDir = Files.createTempDirectory(getClass().getCanonicalName());
+        assertTrue(PathUtils.isEmptyDirectory(tempDir));
+        Files.delete(tempDir);
+    }
+
+    @Test
+    public void testIsEmptyDirectoryStateFalse() throws IOException {
+        final Path tempDir = Files.createTempDirectory(getClass().getCanonicalName());
+        Files.createTempFile(tempDir, "prefix", null);
+        assertFalse(PathUtils.isEmptyDirectory(tempDir));
+        FileUtils.deleteDirectory(tempDir.toFile());
+    }
+
+    @Test
+    public void testIsEmptyDirectoryStateNotDirectoryException() throws IOException {
+        final Path filePath = Files.createTempFile(tempDirPath, "prefix", null);
+        assertThrows(NotDirectoryException.class, () -> PathUtils.isEmptyDirectory(filePath));
+        Files.delete(filePath);
+    }
+
+    @Test
+    public void testIsEmptyDirectoryStateIOException() throws IOException {
+        final Path tempDir = Files.createTempDirectory(getClass().getCanonicalName());
+        Files.delete(tempDir);
+        assertThrows(IOException.class, () -> PathUtils.isEmptyDirectory(tempDir));
     }
 
 }
