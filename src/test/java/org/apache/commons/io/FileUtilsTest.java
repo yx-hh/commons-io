@@ -76,7 +76,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import sun.jvm.hotspot.utilities.Assert;
 
 /**
  * This is used to test FileUtils for correctness.
@@ -3133,7 +3132,7 @@ public class FileUtilsTest extends AbstractTempDirTest {
     public void testIsFileOlderTrue() throws Exception {
         final File refFile = TestUtils.newFile(tempDirFile, "FileUtils-reference.txt");
         TestUtils.generateTestData(refFile, 1);
-        long time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2100-01-01 01:01:01").getTime();
+        final long time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2100-01-01 01:01:01").getTime();
         assertTrue(FileUtils.isFileOlder(refFile, time), "Old File - Older - File");
     }
 
@@ -3141,7 +3140,7 @@ public class FileUtilsTest extends AbstractTempDirTest {
     public void testIsFileOlderFalse() throws Exception {
         final File refFile = TestUtils.newFile(tempDirFile, "FileUtils-reference.txt");
         TestUtils.generateTestData(refFile, 1);
-        long time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2001-01-01 01:01:01").getTime();
+        final long time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2001-01-01 01:01:01").getTime();
         assertFalse(FileUtils.isFileOlder(refFile, time), "Old File - Older - File");
     }
 
