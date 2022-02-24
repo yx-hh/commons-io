@@ -30,8 +30,9 @@ jobs:
         with:
           java-version: '8'
           distribution: 'adopt'
+          cache: maven
       - run: mvn package -Drat.skip=true
-      - run: mkdir staging && cp target/*.jar staging
+#      - run: mkdir staging && cp target/*.jar staging
       - uses: actions/upload-artifact@v2
         with:
           name: Package
