@@ -24,6 +24,7 @@ import java.util.Comparator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 /**
  * Test case for {@link PathFileComparator}.
@@ -55,5 +56,28 @@ public class PathFileComparatorTest extends ComparatorAbstractTest {
         assertEquals(0, insensitive.compare(equalFile1, file3), "insensitive file1 & file3 = 0");
         assertTrue(insensitive.compare(equalFile1, lessFile) > 0, "insensitive file1 & file4 > 0");
         assertTrue(insensitive.compare(file3, lessFile) > 0, "insensitive file3 & less  > 0");
+    }
+
+    @Test
+    public void testCompare(){
+        File file1 = Mockito.mock(File.class);
+        Mockito.when(file1.getPath()).thenReturn("test/file1.txt");
+        File file2 = Mockito.mock(File.class);
+        Mockito.when(file2.getPath()).thenReturn("test/file1.txt");
+        File file3 = Mockito.mock(File.class);
+        Mockito.when(file3.getPath()).thenReturn("TEST/file1.txt");
+        File file4 = Mockito.mock(File.class);
+        Mockito.when(file4.getPath()).thenReturn("tes/file1.txt");
+
+        final Comparator<File> sensitiveComparator = new PathFileComparator();
+        assertEquals(0, sensitiveComparator.compare(file1, file2), "sensitive file1 & file2 = 0");
+        assertTrue(sensitiveComparator.compare(file1, file3) > 0, "sensitive file1 & file3 > 0");
+        assertTrue(sensitiveComparator.compare(file1, file4) > 0, "sensitive file1 & less  > 0");
+
+        final Comparator<File> insensitiveComparator = PathFileComparator.PATH_INSENSITIVE_COMPARATOR;
+        assertEquals(0, insensitiveComparator.compare(file1, file2), "insensitive file1 & file2 = 0");
+        assertEquals(0, insensitiveComparator.compare(file1, file3), "insensitive file1 & file3 = 0");
+        assertTrue(insensitiveComparator.compare(file1, file4) > 0, "insensitive file1 & file4 > 0");
+        assertTrue(insensitiveComparator.compare(file3, file4) > 0, "insensitive file3 & less  > 0");
     }
 }
