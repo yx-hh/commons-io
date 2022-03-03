@@ -60,13 +60,13 @@ public class PathFileComparatorTest extends ComparatorAbstractTest {
 
     @Test
     public void testCompare(){
-        File file1 = Mockito.mock(File.class);
+        final File file1 = Mockito.mock(File.class);
         Mockito.when(file1.getPath()).thenReturn("test/file1.txt");
-        File file2 = Mockito.mock(File.class);
+        final File file2 = Mockito.mock(File.class);
         Mockito.when(file2.getPath()).thenReturn("test/file1.txt");
-        File file3 = Mockito.mock(File.class);
+        final File file3 = Mockito.mock(File.class);
         Mockito.when(file3.getPath()).thenReturn("TEST/file1.txt");
-        File file4 = Mockito.mock(File.class);
+        final File file4 = Mockito.mock(File.class);
         Mockito.when(file4.getPath()).thenReturn("tes/file1.txt");
 
         final Comparator<File> sensitiveComparator = new PathFileComparator();

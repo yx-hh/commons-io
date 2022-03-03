@@ -263,7 +263,7 @@ public class FilenameUtils {
      * @return the path
      * @throws IllegalArgumentException if the result path contains the null character ({@code U+0000})
      */
-    private static String doGetFullPath(final String fileName, final boolean includeSeparator) {
+    public static String doGetFullPath(final String fileName, final boolean includeSeparator) {
         if (fileName == null) {
             return null;
         }

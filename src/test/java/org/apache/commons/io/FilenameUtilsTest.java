@@ -1199,4 +1199,12 @@ public class FilenameUtilsTest {
         assertEquals("\\a\\b\\c", FilenameUtils.separatorsToWindows("/a/b/c"));
         assertEquals("D:\\a\\b\\c", FilenameUtils.separatorsToWindows("D:/a/b/c"));
     }
+
+    @Test
+    public void testDoGetFullPath(){
+        assertEquals("\\a\\b", FilenameUtils.doGetFullPath("\\a\\b\\c.txt", false));
+        assertEquals("\\a\\b\\", FilenameUtils.doGetFullPath("\\a\\b\\c.txt", true));
+        assertEquals("D:/a/b/", FilenameUtils.doGetFullPath("D:/a/b/c", true));
+        assertEquals("/a/b", FilenameUtils.doGetFullPath("/a/b/c", false));
+    }
 }
